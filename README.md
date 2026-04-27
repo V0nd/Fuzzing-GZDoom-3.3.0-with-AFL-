@@ -6,7 +6,7 @@ Fuzzing the GZDoom game engine version 3.3.0 using AFL++.
 
 - Reverse engineer WAD file parsing in GZDoom
 - Develop a libFuzzer-style harness
-- Fuzz with AFL++ for
+- Fuzz with AFL++
 - Triage crashes
 - Develop exploit for one bug
 
@@ -41,4 +41,4 @@ make -j$(nproc)
 - [ ] Exploit development
 
 ## Documentation
-- [Setup Notes](docs/setup-notes.md) – build issues encountered, fixes and notes on interesting tidbits
+- [Setup Notes](docs/setup_notes.md) – build issues encountered, fixes and notes on interesting tidbits
