@@ -33,13 +33,12 @@ make -j$(nproc)
 
 - [x] Docker environment with AFL++
 - [x] Vanilla GZDoom build
-- [ ] AFL instrumented build
+- [x] AFL instrumented build
 - [ ] Fuzzing harness
 - [ ] Seed corpus collection
 - [ ] Fuzz run
 - [ ] Crash triage
 - [ ] Exploit development
 
-## ChangesFixes made from the original GZDoom 3.3.0 to run on modern Linux
-/work/gzdoom/src/scripting/types.cpp:742:62: error: 'numeric_limits' is not a member of 'std'
-=> adding #include \<limits\>
+## Documentation
+- [Setup Notes](docs/setup-notes.md) – build issues encountered, fixes and notes on interesting tidbits
