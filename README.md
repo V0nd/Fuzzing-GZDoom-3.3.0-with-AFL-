@@ -42,3 +42,5 @@ make -j$(nproc)
 
 ## Documentation
 - [Setup Notes](docs/setup_notes.md) – build issues encountered, fixes and notes on interesting tidbits
+
+- [Harness Design](docs/setup_notes.md) – original code analysis, attack surfaces and entry points for harness

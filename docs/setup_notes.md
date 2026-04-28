@@ -11,7 +11,7 @@ GCC 11 stopped transitively including `<limits>`. The file uses
 `std::numeric_limits<double>::quiet_NaN()` but doesn't include `<limits>`
 explicitly. Older compilers worked due to transitive includes from STL.
 
-**Fix:** Just added `#include </limits/>` src/scripting/types.cpp
+**Fix:** Just added `#include <limits/` to src/scripting/types.cpp
 
 ## GZDoom specifics
 ### AFL build
