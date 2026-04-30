@@ -34,7 +34,7 @@ make -j$(nproc)
 - [x] Docker environment with AFL++
 - [x] Vanilla GZDoom build
 - [x] AFL instrumented build
-- [ ] Fuzzing harness
+- [x] Fuzzing harness draft
 - [ ] Seed corpus collection
 - [ ] Fuzz run
 - [ ] Crash triage
