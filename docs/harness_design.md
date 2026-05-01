@@ -51,6 +51,22 @@ FResourceFile *CheckWad(const char *filename, FileReader &file, bool quiet)
 }
 ```
 
+
+## Calling CheckWad
+The harness needs to call `CheckWad`, which is defined in `resourcefiles/file_wad.cpp`. `CheckWad` is not in any public header files, so the harness does not know it exists. To solve this the harness uses a forward declaration (basically a promise to a compiler that this specific signature will be defined later on):
+
+```cpp
+class FResourceFile;
+FResourceFile *CheckWad(const char *filename, FileReader &file, bool quiet);
+```
+
+This can be done because:
+- `FResourceFile` is only used as a **pointer return type**
+- The C++ compiler does not need to know structure of `FResourceFile`, it is a pointer
+- The actual definition will be resolved later by the linker, which find `CheckWad` in the compiled `filed_wad.cpp.o`, GZDoom uses the same thing in forward declaration of `CheckWad` in `resourcefiles/resourcefile.cpp:282`
+
+This turned out to be a bad call. The `FResourceFile` had to be defined fully with `#include "resourcefiles/resourcefile.h"` because the compiler doesn't know about virtual destructor this way. More on this [here](docs/harness_implementation.md).
+
 ## Attack surfaces
 
 - **Integer overflow on `NumLumps` / `InfoTableOfs`**

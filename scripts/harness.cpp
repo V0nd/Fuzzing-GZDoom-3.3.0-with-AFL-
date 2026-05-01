@@ -2,8 +2,28 @@
 #include <cstdio>       //FILE, fopen, fread, fprintf, perror
 #include "files.h"      //FileReader
 
-class FResourceFile;
+//class FResourceFile;
 FResourceFile *CheckWad(const char *filename, FileReader &file, bool quiet);
+
+//stub symbols normally defined in i_main.cpp
+//forward-declare FArgs (defined in m_argv.h, but we don't need full def)
+class FArgs;
+
+//global Args pointer - normally holds parsed command-line arguments
+//during fuzzing no processing of command-line args, so leave it null
+FArgs *Args = nullptr;
+
+//stub cleanup registration - no-op for fuzzing
+void addterm(void (*func)(), const char *name) 
+{
+    (void)func;
+    (void)name;
+}
+
+void popterm() 
+{
+    //intentionally empty
+}
 
 extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size)
 {

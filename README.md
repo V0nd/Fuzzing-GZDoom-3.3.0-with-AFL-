@@ -35,6 +35,7 @@ make -j$(nproc)
 - [x] Vanilla GZDoom build
 - [x] AFL instrumented build
 - [x] Fuzzing harness draft
+- [x] Harness implementation + harness build verified
 - [ ] Seed corpus collection
 - [ ] Fuzz run
 - [ ] Crash triage
@@ -43,4 +44,6 @@ make -j$(nproc)
 ## Documentation
 - [Setup Notes](docs/setup_notes.md) – build issues encountered, fixes and notes on interesting tidbits
 
-- [Harness Design](docs/setup_notes.md) – original code analysis, attack surfaces and entry points for harness
+- [Harness Design](docs/harness_design.md) – original code analysis, attack surfaces and entry points for harness
+
+- [Harness Implementation](docs/harness_implementation.md) – CMakeLists.txt modifications, linker errors resolved
