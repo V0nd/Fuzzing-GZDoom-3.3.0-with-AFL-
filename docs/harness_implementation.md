@@ -38,7 +38,7 @@ This creates two binaries: the normal `gzdoom` and `harness` for fuzzing.
 
 ## Forward declarations vs. full includes (FResourceFile)
 
-The harness initially used a forward declaration of `FResourceFile` (see [harness-design.md](harness-design.md)). This worked for calling `CheckWad`, but broke down when deleting the result.
+The harness initially used a forward declaration of `FResourceFile` (see [harness-design.md](harness_design.md)). This worked for calling `CheckWad`, but broke down when deleting the result.
 
 ### Deleting incomplete type
 
