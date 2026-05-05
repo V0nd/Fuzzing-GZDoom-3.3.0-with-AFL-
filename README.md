@@ -36,7 +36,7 @@ make -j$(nproc)
 - [x] AFL instrumented build
 - [x] Fuzzing harness draft
 - [x] Harness implementation + harness build verified
-- [ ] Seed corpus collection
+- [x] Seed corpus collection
 - [ ] Fuzz run
 - [ ] Crash triage
 - [ ] Exploit development
