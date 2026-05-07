@@ -38,7 +38,7 @@ extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size)
     {
         result = CheckWad("fuzz_input.wad", reader, true);
     }
-    catch (const CRecoverableError) 
+    catch (const CRecoverableError&) 
     {
         //suppress C++ exceptions, we want crashes only
     }
