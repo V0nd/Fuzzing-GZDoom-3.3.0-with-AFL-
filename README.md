@@ -47,3 +47,5 @@ make -j$(nproc)
 - [Harness Design](docs/harness_design.md) – original code analysis, attack surfaces and entry points for harness
 
 - [Harness Implementation](docs/harness_implementation.md) – CMakeLists.txt modifications, linker errors resolved
+
+- [Fuzzing Diary](docs/fuzzing_diary.md) - Fuzzing and harness iterations

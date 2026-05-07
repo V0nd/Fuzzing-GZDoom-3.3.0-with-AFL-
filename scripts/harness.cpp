@@ -1,6 +1,8 @@
 #include <cstdint>      //uint8_t, size_t
 #include <cstdio>       //FILE, fopen, fread, fprintf, perror
 #include "files.h"      //FileReader
+#include "resourcefiles/resourcefile.h"
+#include "doomerrors.h"
 
 //class FResourceFile;
 FResourceFile *CheckWad(const char *filename, FileReader &file, bool quiet);
@@ -36,7 +38,7 @@ extern "C" int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size)
     {
         result = CheckWad("fuzz_input.wad", reader, true);
     }
-    catch (...) 
+    catch (const CRecoverableError) 
     {
         //suppress C++ exceptions, we want crashes only
     }
