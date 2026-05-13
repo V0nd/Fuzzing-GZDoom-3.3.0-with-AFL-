@@ -1,6 +1,6 @@
-# Harness Development Diary
+# FUzzing Development Diary
 
-A chronological log of harness iterations during the GZDoom WAD parser
+A chronological log of fuzzes and  harness iterations during the GZDoom WAD parser
 fuzzing project. Documents design decisions, observed problems, and
 solutions across multiple iterations.
 
@@ -60,7 +60,7 @@ of malformed WADs via `I_Error()`. The parser working as designed.
 
 ---
 
-## Iteration 3: Selective exception handling (current)
+## Iteration 3: Selective exception handling (12/05/2026)
 
 ### Goal
 Filter parser's intentional error events while preserving real bugs.
@@ -98,4 +98,31 @@ catch (const CRecoverableError&)
 ```
 
 ### Result
-Fuzz run in progress at time of writing
+- ⚠️ After 4.5 hours fuzzing / 4.5M executions:
+  - `total_crashes`: 0
+  - `saved_crashes`: 0
+  - `corpus_count`: 81 (stagnation)
+  - `last_new_find`: 3h 52min ago at time of analysis
+
+Parse validation grafecully handles all "obvious broken" inputs at 
+file, header, lump and read level.
+
+All detected errors funnel through `I_Error()` → `CRecoverableError`
+exception path resulting in graceful rejection rather than crashes.
+
+### Contemplation
+Could there be bugs on deeper levels like lumps, JPEG textures, MIDI music, ...
+I like the sound of the lump content processing. Attacker controlled 'Position'
+and 'LumpSize' values get used in seek and read operations.
+
+## Iteration 4: Lump-level harness (ongoing)
+
+### Hypothesis
+The `CheckWad` harness only tries container parsing — header validation
+and lump directory reading. The actual lump *content* processing happens
+later, in `FWadFileLump::FillCache()`, which uses the `Position` and
+`LumpSize` values stored during `CheckWad`. Could there be validation gaps?
+
+### Approach
+Extend harness to lump-level processing.
+
