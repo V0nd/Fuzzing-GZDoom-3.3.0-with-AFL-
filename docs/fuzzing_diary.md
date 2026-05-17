@@ -124,5 +124,63 @@ later, in `FWadFileLump::FillCache()`, which uses the `Position` and
 `LumpSize` values stored during `CheckWad`. Could there be validation gaps?
 
 ### Approach
-Extend harness to lump-level processing.
+Extend harness to lump-level processing by:
 
+```cpp
+    try 
+    {
+        result = CheckWad("fuzz_input.wad", reader, true);
+
+        if(result != nullptr)
+        {
+            uint32_t numLumps = result->LumpCount();
+            for(uint32_t i = 0; i < numLumps; i++)
+            {
+                FResourceLump *lump = result->GetLump(i);
+                if(lump)
+                {
+                    lump->CacheLump();
+                    lump->ReleaseCache();
+                }
+            }
+        }
+
+    }
+```
+
+### First fuzz run: 2h 35min
+
+- `total_execs`: 1.97M
+- `corpus_count`: 144 (from 8 seeds)
+- `saved_crashes`: 19
+- `saved_hangs`: 18
+
+### Bugs found
+¨
+**Bug 1: LZSS decompressor assertion failure**
+- location: `src/file_decompress.cpp:559` in `DecompressorLZSS::Read`
+
+- trigger: compressed lump where decompresed size < declared LumpSize
+- why: `assert(AvailOut == 0)` fails when compressed stream reaches `STREAM_FINAL`
+before producing requested output bytes, the loop exits with `AvailOut > 0` 
+
+```cpp
+do {
+    // ... decompression logic ...
+} while (AvailOut && Stream.State != STREAM_FINAL);
+
+assert(AvailOut == 0);
+```
+
+- impact: SIGABRT crash, partial buffer fill (potential for unintialized memory use??)
+- reproducers: 19 distinct AFL crash inputs all triggering same assertion
+
+**Bug 2: LZSS decompressor infinite loop**
+- location: same read function as before
+- trigger: compressed stream that doesn't progress AvailOut or reach STREAM_FINAL
+- meachanism: outer do while loop iterates infinitely
+- impact: permanent hang
+- reproducers: 18 distinct AFL hang inputs 
+
+next steps: try to push the first bug to memory issue, minimize reproducer, 
+test if bugs exist in current version of GZDoom
