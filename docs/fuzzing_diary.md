@@ -179,8 +179,24 @@ assert(AvailOut == 0);
 - location: same read function as before
 - trigger: compressed stream that doesn't progress AvailOut or reach STREAM_FINAL
 - meachanism: outer do while loop iterates infinitely
-- impact: permanent hang
 - reproducers: 18 distinct AFL hang inputs 
+
+```cpp
+void FillBuffer() {
+    auto numread = File.Read(...);
+    if (numread < BUFF_SIZE)
+        SawEOF = true;  //set but NEVER CHECKED
+    // ...
+}
+
+//in Read():
+while (AvailOut && Stream.State != STREAM_FINAL) {
+    //SawEOF not checked here → infinite loop possible
+}
+```
+
+- impact: permanent hang, process hangs indefinitely
+
 
 next steps: try to push the first bug to memory issue, minimize reproducer, 
 test if bugs exist in current version of GZDoom
